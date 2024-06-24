@@ -27,7 +27,7 @@ const login = async (req, res) => {
         }else{
             if(user.password!=password){
                 console.log('pp in')
-                return res.status(201x).json({ error: "Password incorrect" });
+                return res.status(201).json({ error: "Password incorrect" });
             }else{
                 console.log('Go to home page')
                 res.status(201).json({ message: "User Login successfully",newUser});
