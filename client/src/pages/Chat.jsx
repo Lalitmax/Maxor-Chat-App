@@ -351,37 +351,19 @@ const Chat = () => {
 
 
 
-  const touchStartX = useRef(0);
-  const touchEndX = useRef(0);
-
   useEffect(() => {
-    const handleTouchStart = (e) => {
-      touchStartX.current = e.changedTouches[0].screenX;
+    const handleBackButton = () => {
+       
+      console.log('Back button was pressed');
+      handleSidebarAndRightbar()
     };
 
-    const handleTouchMove = (e) => {
-      touchEndX.current = e.changedTouches[0].screenX;
-    };
+    // Listen for popstate events
+    window.addEventListener('popstate', handleBackButton);
 
-    const handleTouchEnd = () => {
-      if (touchStartX.current - touchEndX.current > 50) {
-        onSwipeLeft();
-      }
-    };
-
-    const onSwipeLeft = () => {
-      console.log('Left swipe detected');
-    };
-
-    document.addEventListener('touchstart', handleTouchStart);
-    document.addEventListener('touchmove', handleTouchMove);
-    document.addEventListener('touchend', handleTouchEnd);
-
-    // Clean up the event listeners on component unmount
+    // Cleanup event listener on component unmount
     return () => {
-      document.removeEventListener('touchstart', handleTouchStart);
-      document.removeEventListener('touchmove', handleTouchMove);
-      document.removeEventListener('touchend', handleTouchEnd);
+      window.removeEventListener('popstate', handleBackButton);
     };
   }, []);
 
@@ -389,7 +371,7 @@ const Chat = () => {
 
   return (
     <div onClick={() => minnimizeAllabsoluteDialogue()} className={` ${inPhoneMode ? 'pt-10' : 'pl-11 pt-10'} chatWrapper h-screen w-screen bg-gray-800`}>
-            <h1 className="logo absolute top-1 left-2 font-bold text-white text-2xl flex items-center justify-between cursor-pointer"   ><img className='h-5 mr-1' src={exampleImage} alt="" />Maxor</h1>
+            <h1 className=" select-none logo absolute top-1 left-2 font-bold text-white text-2xl flex items-center justify-between cursor-pointer"   ><img className='h-5 mr-1' src={exampleImage} alt="" />Maxor</h1>
 
       <div className={` ${inPhoneMode ? ' right-4 top-1' : ' bottom-3 left-1 '} profile absolute z-10`}>
         <button className='text-white text-2xl' onClick={() => setIsShowProfile(prev => !prev)}>⚛️</button>
@@ -407,16 +389,16 @@ const Chat = () => {
             <div className="chatsAndCreateNew m-2 top-0 relative">
               <div className="flex justify-between items-center border-b border-gray-800 pb-2 mb-2 relative">
                 <span className="text-white">Chats</span>
-                <button className={`${isSelectedAddFriend ? ' bg-slate-600 ' : ''} transition-all text-gray-400 border border-gray-400 rounded-md p-1`} onClick={(e) => handleCreateFriend(e)}>New</button>
+                <button className={`${isSelectedAddFriend ? ' bg-slate-600 ' : ''} transition-all text-gray-400 border border-gray-400 rounded-md p-1 select-none `} onClick={(e) => handleCreateFriend(e)}>New</button>
                 {isAddFriendOpen && <div onClick={(e) => e.stopPropagation()} className={` ${isSelectedAddFriend ? 'transition-all ' : ''}  ${!rightbarVisible ? ' top-6 right-14' : 'top-5 -right-48 '} addFriend z-10  border-gray-900 flex-col pt-5 h-36 rounded-md w-44 items-center bg-gray-800 absolute `}>
                   <div className='flex items-center justify-center text-gray-300 p-2'>
                     <input value={friendUsername} type="text" placeholder="Enter username" className="searchBar w-full p-2 rounded-md bg-gray-800 border outline-none border-gray-500 text-gray-400" onKeyPress={(e) => e.key === 'Enter' && handleAddFriend()} onChange={(e) => setFriendUsername(e.target.value.toLowerCase().trim(' '))} />
                   </div>
                   {!clickedBtn ?
-                    <button className='flex items-center justify-center w-16 rounded p-1 m-auto mt-2 text-gray-300 font-bold bg-[#1c212c] cursor-pointer' onClick={
+                    <button className='select-none flex items-center justify-center w-16 rounded p-1 m-auto mt-2 text-gray-300 font-bold bg-[#1c212c] cursor-pointer' onClick={
                       () => handleAddFriend()}>Add</button>
                     :
-                    <div className="flex items-center justify-center w-16 rounded p-1 m-auto mt-2 text-gray-300 font-bold bg-[#1c212c] cursor-pointer">
+                    <div className="flex items-center justify-center w-16 rounded p-1 m-auto mt-2 text-gray-300 font-bold bg-[#1c212c]">
                       <Loader></Loader>
                     </div>
 

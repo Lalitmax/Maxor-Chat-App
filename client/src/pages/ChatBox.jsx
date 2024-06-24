@@ -43,8 +43,8 @@ const ChatBox = ({ messages, input, setInput, rightbarVisible, sendMessage, whFu
   }, [toUser])
 
   return (
-    <div onClick={() => hideEmojiPicker()} className={`${!rightbarVisible ? 'hidden' : ''} chatBox rounded-md flex flex-col relative ${whFull}`}>
-      <button onClick={() => phoneMode()} className={`${!isInPhoneMode ? 'hidden' : ''} absolute top-3 left-3 hover:bg-gray-800 z-30 transition-all  p-[3px]  px-1 mr-1 flex items-center justify-center rounded`}><box-icon name='arrow-back' color="white"  ></box-icon></button>
+    <div onClick={() => hideEmojiPicker()} className={`${!rightbarVisible ? 'hidden' : ''} chatBox  rounded-md flex flex-col relative ${whFull}`}>
+      <button onClick={() => phoneMode()} className={`${!isInPhoneMode ? 'hidden' : ''} absolute select-none top-3 left-3 hover:bg-gray-800 z-30 transition-all  p-[3px]  px-1 mr-1 flex items-center justify-center rounded`}><box-icon name='arrow-back' color="white"  ></box-icon></button>
 
       <div className="displayUserName text-white p-2 border-b border-gray-800 flex items-center justify-center w-full">
         <span className="flex items-center justify-center h-10 w-10 rounded-full border mr-2 bg-[#1c212d]">
@@ -88,7 +88,7 @@ const ChatBox = ({ messages, input, setInput, rightbarVisible, sendMessage, whFu
           onChange={(e) => setInput(e.target.value)}
           onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
         />
-        <button className="bg-green-500 text-black rounded-2xl ml-2 px-4" onClick={sendMessage}>
+        <button className="bg-green-500 text-black rounded-2xl ml-2 px-4 select-none " onClick={sendMessage}>
           Send
         </button>
 
