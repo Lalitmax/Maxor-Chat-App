@@ -19,7 +19,7 @@ const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const socket = useRef(null);
-  const friendUsernameRef = useRef(null);
+  const [friendUsername,setFriendUsername] = useState('')
   const [toUser, setToUser] = useState('');
   const [from, setFrom] = useState('');
   const [selectTosender, setSelectToSender] = useState(false);
@@ -188,7 +188,7 @@ const Chat = () => {
 
   async function handleAddFriend() {
     setClickedBtn(true)
-    const username = friendUsernameRef.current.value.trim();
+    const username = friendUsername;
     if (!username) {
       setTimeout(() => {
         showPopup('Enter a username.');
@@ -409,7 +409,7 @@ const Chat = () => {
                 <button className={`${isSelectedAddFriend ? ' bg-slate-600 ' : ''} transition-all text-gray-400 border border-gray-400 rounded-md p-1`} onClick={(e) => handleCreateFriend(e)}>New</button>
                 {isAddFriendOpen && <div onClick={(e) => e.stopPropagation()} className={` ${isSelectedAddFriend ? 'transition-all ' : ''}  ${!rightbarVisible ? ' top-6 right-14' : 'top-5 -right-48 '} addFriend z-10  border-gray-900 flex-col pt-5 h-36 rounded-md w-44 items-center bg-gray-800 absolute `}>
                   <div className='flex items-center justify-center text-gray-300 p-2'>
-                    <input ref={friendUsernameRef} type="text" placeholder="Enter username" className="searchBar w-full p-2 rounded-md bg-gray-800 border outline-none border-gray-500 text-gray-400" onKeyPress={(e) => e.key === 'Enter' && handleAddFriend()} />
+                    <input value={friendUsername} type="text" placeholder="Enter username" className="searchBar w-full p-2 rounded-md bg-gray-800 border outline-none border-gray-500 text-gray-400" onKeyPress={(e) => e.key === 'Enter' && handleAddFriend()} onChange={(e) => setFriendUsername(e.target.value.toLowerCase().trim(' '))} />
                   </div>
                   {!clickedBtn ?
                     <button className='flex items-center justify-center w-16 rounded p-1 m-auto mt-2 text-gray-300 font-bold bg-[#1c212c] cursor-pointer' onClick={
