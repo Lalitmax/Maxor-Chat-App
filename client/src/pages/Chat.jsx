@@ -52,10 +52,9 @@ const Chat = () => {
     }
   };
 
-  function handleSidebarAndRightbar(e) {
+  function handleSidebarAndRightbar() {
     setSidebarVisible(true);
     setRightbarVisible(false)
-    e.stopPropagation()
 
   }
   function showPopup(message) {
@@ -90,7 +89,7 @@ const Chat = () => {
   }
 
   function handleCreateFriend(e) {
-    //  e.stopPropagation()
+     e.stopPropagation()
     setIsAddFriendOpen(true)
     setAsSelectedAddFriend(true)
 
@@ -292,7 +291,7 @@ const Chat = () => {
         text: input,
         toUser: toUser,
         from: from,
-      };
+      };  
       socket.current.emit('private_message', message);
       setMessages((prevMessages) => [...prevMessages, { text: message.text, self: true }]);
       postMessage(from, toUser, { text: message.text, self: true });
@@ -390,8 +389,8 @@ const Chat = () => {
 
   return (
     <div onClick={() => minnimizeAllabsoluteDialogue()} className={` ${inPhoneMode ? 'pt-10' : 'pl-11 pt-10'} chatWrapper h-screen w-screen bg-gray-800`}>
+            <h1 className="logo absolute top-1 left-2 font-bold text-white text-2xl flex items-center justify-between cursor-pointer"   ><img className='h-5 mr-1' src={exampleImage} alt="" />Maxor</h1>
 
-      <h1 className="logo absolute top-1 left-2 font-bold text-white text-2xl flex items-center justify-between cursor-pointer"   > <button onClick={(e) => handleSidebarAndRightbar(e)} className={`${!rightbarVisible || sidebarVisible ? 'hidden' : ''}  z-30 transition-all hover:bg-[#1c212c] p-[3px]  px-1 mr-1 flex items-center justify-center rounded`}><box-icon name='arrow-back' color="white"  ></box-icon></button><img className='h-5 mr-1' src={exampleImage} alt="" />Maxor</h1>
       <div className={` ${inPhoneMode ? ' right-4 top-1' : ' bottom-3 left-1 '} profile absolute z-10`}>
         <button className='text-white text-2xl' onClick={() => setIsShowProfile(prev => !prev)}>⚛️</button>
         {isShowProfile && <div onClick={(e) => e.stopPropagation()} className={` ${inPhoneMode ? '-left-36 top-1' : 'bottom-8 left-8'} profileDisplay rounded border border-gray-900 flex-col h-32 w-32 items-center bg-gray-800 absolute `}>
@@ -464,6 +463,8 @@ const Chat = () => {
             sendMessage={sendMessage}
             whFull={'w-full h-full'}
             toUser={toUser}
+            handleSidebarAndRightbar={handleSidebarAndRightbar}
+            selectTosender={selectTosender}
           /> : <div className={`${!rightbarVisible ? 'hidden' : ''} chats h-full w-full flex items-center justify-center text-white text-2xl`}>
             ChatBox
           </div>}
