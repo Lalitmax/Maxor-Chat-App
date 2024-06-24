@@ -1,12 +1,12 @@
 {
-  "name": "Maxio",
+  "name": "Maxor",
   "version": "1.0.0",
-  "description": "chat app for lover",
+  "description": "Maxor Chat App is a real-time chat application designed for anonymous communication. Users only need to register with a username, full name, and password to start chatting. This app allows for seamless, private conversations without revealing personal information beyond what's necessary for account creation.",
   "main": "index.js",
   "type": "module",
   "scripts": {
     "test": "nodemon index.js",
-    "build":"node index.js"
+    "build": "node index.js"
   },
   "author": "Lalit Max",
   "license": "ISC",
