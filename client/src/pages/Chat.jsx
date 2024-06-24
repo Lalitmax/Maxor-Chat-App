@@ -83,6 +83,7 @@ const Chat = () => {
     if (isAddFriendOpen != false) {
       setIsAddFriendOpen(false)
       setAsSelectedAddFriend(false)
+      setFriendUsername('');
     }
 
 
@@ -156,6 +157,7 @@ const Chat = () => {
       });
       if (data) {
         console.log(data);
+        setFriendUsername('');
         return true;
       } else {
         console.log();

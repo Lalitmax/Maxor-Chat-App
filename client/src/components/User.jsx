@@ -38,9 +38,9 @@ const User = ({ handleSetUser, index, friend, selected, handleArchiveDeleteClean
         </div>
 
         {archiveDeleteCleanChat ?
-          <div onClick={e => e.stopPropagation()} className="popup z-30 transition-all right-16 -top-14 addFriend shadow-slate-700 flex flex-col rounded-md w-auto items-center bg-red-900 absolute mt-10 px-4 py-3 ">
+          <div onClick={e => e.stopPropagation()} className="popup z-30 transition-all right-16 -top-14 addFriend shadow-slate-700 flex flex-col rounded-md w-auto items-center bg-red-900 absolute mt-10 px-2 py-1 ">
             {!clickedBtn ?
-              <div className='flex items-center justify-center  text-gray-300 font-bold hover:bg-gray-700 cursor-pointer w-full mb-1' onClick={() => handleOptionClick('delete')}>Delete</div>
+              <div className='flex items-center justify-center  text-gray-300 font-bold hover:bg-red-900 cursor-pointer w-full mb-1' onClick={() => handleOptionClick('delete')}>Delete</div>
               :
               <div className=" select-none flex items-center justify-center  text-gray-300 font-bold cursor-pointer w-full mb-1 mx-2"><Loader/></div>
             }
