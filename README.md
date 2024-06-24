@@ -63,21 +63,21 @@ Maxor Chat App is a real-time chat application built using modern web technologi
 
    Create a `.env` file in the server directory and add the following variables:
    ```env
-   MONGO_URI=your_mongodb_uri
-   JWT_SECRET=your_jwt_secret
-   SOCKET_PORT=your_socket_port
+   PORT=
+   MONGODB_URL=
+   MONGODB_PASSWORD=
    ```
 
 4. **Run the application:**
 
    For the client:
    ```bash
-   npm start
+   npm run dev
    ```
 
    For the server:
    ```bash
-   npm start
+   npm run test
    ```
 
 ## Usage
