@@ -5,8 +5,9 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 const APPID=process.env.APPID;
+const APIKEY=process.env.APIKEY;
 const firebaseConfig = {
-  apiKey: "AIzaSyCFQNToBeLRbiX6qwCsck0hCXvZe_Q9JEM",
+  apiKey: APIKEY,
   authDomain: "chat-app-user-img.firebaseapp.com",
   projectId: "chat-app-user-img",
   storageBucket: "chat-app-user-img.appspot.com",
