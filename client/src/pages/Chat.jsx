@@ -243,7 +243,10 @@ const Chat = () => {
     });
 
     socket.current.on('private_message', (message) => {
-      setMessages((prevMessages) => [...prevMessages, { text: message.text, self: false }]);
+    
+      if(message.from==localStorage.getItem('selected-user')){
+        setMessages((prevMessages) => [...prevMessages, { text: message.text, self: false }]);
+      }
       postMessage(message.to, message.from, { text: message.text, self: false });
 
     });

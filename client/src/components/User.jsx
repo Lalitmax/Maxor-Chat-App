@@ -7,6 +7,7 @@ const User = ({ handleSetUser, index, friend, selected, handleArchiveDeleteClean
 
   const handleClick = () => {
     handleSetUser(friend, index);
+    localStorage.setItem('selected-user',friend)
   };
 
 
