@@ -4,7 +4,7 @@ import Picker from '@emoji-mart/react';
 import data from '@emoji-mart/data';
 import exampleImage from '../assets/MaxioIcon.png'; // Import your image
 
-const ChatBox = ({ messages, input, setInput, rightbarVisible, sendMessage, whFull, toUser, hideEmojiPicker, handleSidebarAndRightbar, selectTosender }) => {
+const ChatBox = ({ messages, input, setInput, rightbarVisible, sendMessage, whFull, toUser,toUserProfileImage, hideEmojiPicker, handleSidebarAndRightbar, selectTosender }) => {
   const messageEndRef = useRef(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const fromUserName = JSON.parse(localStorage.getItem('chat-app-user'));
@@ -47,8 +47,9 @@ const ChatBox = ({ messages, input, setInput, rightbarVisible, sendMessage, whFu
       <button onClick={() => phoneMode()} className={`${!isInPhoneMode ? 'hidden' : ''} absolute select-none top-3 left-3 hover:bg-gray-800 z-30 transition-all  p-[3px]  px-1 mr-1 flex items-center justify-center rounded`}><box-icon name='arrow-back' color="white"  ></box-icon></button>
 
       <div className="displayUserName text-white p-2 border-b border-gray-800 flex items-center justify-center w-full">
-        <span className="flex items-center justify-center h-10 w-10 rounded-full border mr-2 bg-[#1c212d]">
-          <box-icon type="solid" name="user-circle" color="white" size="md"></box-icon>
+        <span className="flex items-center justify-center h-12 w-12 rounded-full border mr-2 bg-[#1c212d]">
+        <img className='h-12 w-12 rounded-full' src={toUserProfileImage} alt="" />
+          
         </span>
         <span className="text-xl">{toUser}</span>
       </div>

@@ -29,6 +29,7 @@ const Chat = () => {
   const [isSelectedAddFriend, setAsSelectedAddFriend] = useState(false);
   const [isAddFriendOpen, setIsAddFriendOpen] = useState(false);
   const [userProfileImage,setUserProfileImage] = useState('');
+  const [toUserProfileImage,setToUserProfileImage] = useState('');
 
   const [popup, setPopup] = useState({
     visible: false,
@@ -37,8 +38,9 @@ const Chat = () => {
 
   const [selectedUserIndex, setSelectedUserIndex] = useState(null); // Add this line
 
-  const handleSetUser = (friendUserName, index) => { // Modify this function
+  const handleSetUser = (friendUserName,profileImage, index) => { // Modify this function
     setToUser(friendUserName);
+    setToUserProfileImage(profileImage);
     setSelectToSender(true);
     setSidebarVisible(false);
     setRightbarVisible(true)
@@ -470,6 +472,7 @@ const Chat = () => {
             sendMessage={sendMessage}
             whFull={'w-full h-full'}
             toUser={toUser}
+            toUserProfileImage={toUserProfileImage}
             handleSidebarAndRightbar={handleSidebarAndRightbar}
             selectTosender={selectTosender}
           /> : <div className={`${!rightbarVisible ? 'hidden' : ''} chats h-full w-full flex items-center justify-center text-white text-2xl`}>

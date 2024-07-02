@@ -6,7 +6,7 @@ const User = ({ handleSetUser, index, friendAndPrifileImage, selected, handleArc
   const [clickedBtn, setClickedBtn] = useState(false)
 
   const handleClick = () => {
-    handleSetUser(friendAndPrifileImage.friendUserName, index);
+    handleSetUser(friendAndPrifileImage.friendUserName,friendAndPrifileImage.profileImage, index);
     localStorage.setItem('selected-user',friendAndPrifileImage.friendUserName)
   };
 
