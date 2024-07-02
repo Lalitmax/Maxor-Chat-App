@@ -12,6 +12,7 @@ const chatSchema = new Schema({
 // Schema for friends and their associated chats
 const friendAndChatsSchema = new Schema({
   friendUserName: { type: String, required: true },
+  profileImage:{type:String,required:true},
   chats: [chatSchema]
 }, { _id: false });
 

@@ -1,4 +1,5 @@
 import { User } from '../model/messageModel.js';
+import Register from '../model/register.js';
 
 // User controller
 const userController = async (req, res) => {
@@ -6,6 +7,13 @@ const userController = async (req, res) => {
         const { username, friendUserName, chat } = req.body;
         // Find existing user
         let existingUser = await User.findOne({ username });
+
+        // Find friend's profile image
+        const friend = await Register.findOne({ username: friendUserName });
+        if (!friend) {
+            return res.status(404).json({ message: 'Friend not found.' });
+        }
+        const profileImage = friend.profileImage;
 
         if (existingUser) {
             let friendExists = false;
@@ -23,16 +31,14 @@ const userController = async (req, res) => {
                 // If friend does not exist, add a new friend with the initial chat
                 existingUser.friendAndChats.push({
                     friendUserName,
+                    chats: [chat],
+                    profileImage
                 });
-                // Save the updated user
-                await existingUser.save();
-                return res.status(200).json({ message: 'Friend Added Successfully' });
-
             }
 
             // Save the updated user
             await existingUser.save();
-            res.status(200).json({ message: 'User and chats updated successfully.' });
+            res.status(200).json({ message: friendExists ? 'User and chats updated successfully.' : 'Friend Added Successfully' });
 
         } else {
             // Create a new user with the friend and chat
@@ -40,10 +46,10 @@ const userController = async (req, res) => {
                 username,
                 friendAndChats: [{
                     friendUserName,
-                    chats: [chat]
+                    chats: [chat],
+                    profileImage
                 }]
             });
-
             // Save the new user
             await newUser.save();
             res.status(201).json({ message: 'New user and chats created successfully.' });

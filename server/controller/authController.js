@@ -3,14 +3,14 @@ import bcrypt from 'bcrypt';
 
 const register = async (req, res) => {
     try {
-        const { username, name, password } = req.body;
+        const { username, name, password,profileImage} = req.body;
         const existingUser = await Register.findOne({ username });
         if (existingUser) {
             return res.status(400).json({ message: "User already exists" });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = new Register({ username, name, password: hashedPassword });
+        const newUser = new Register({ username, name, password: hashedPassword ,profileImage});
         await newUser.save();
         res.status(201).json({ message: "User registered successfully" });
     } catch (error) {

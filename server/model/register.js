@@ -5,7 +5,8 @@ const {Schema} =mongoose;
 const registerSchema = new Schema({
     username:{type:String,unique:true},
     name:{type:String,required:true},
-    password:{type:String,required:true}
+    password:{type:String,required:true},
+    profileImage:{type:String,required:true}
 
 });
 

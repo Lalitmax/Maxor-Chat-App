@@ -9,3 +9,4 @@ export const isUserExistOrNotApi = `${host}/api/isUserExistOrNot`
 export const postUserAndFriednData = `${host}/api/user`; 
 export const addFriendApi = `${host}/api/user`; 
 export const deleteFriendApi = `${host}/api/deleteFriend`; 
+export const getUserProfileImage = `${host}/api/getUserProfileImage`; 

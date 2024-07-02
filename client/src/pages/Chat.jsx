@@ -2,11 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import 'boxicons';
 import { io } from 'socket.io-client';
 import axios from 'axios';
-import { getFriend, getSpecificUserData, host, postUserAndFriednData, isUserExistOrNotApi, addFriendApi, deleteFriendApi } from '../utils/ApiRoutes';
+import { getFriend, getSpecificUserData, host, postUserAndFriednData, isUserExistOrNotApi, addFriendApi, deleteFriendApi, getUserProfileImage } from '../utils/ApiRoutes';
 import ChatBox from './ChatBox';
 import User from '../components/User';
 import { useNavigate } from 'react-router-dom';
-import exampleImage from '../assets/MaxioIcon.png'; // Import your image
+import Logo from '../assets/MaxioIcon.png'; // Import your image
 import Loader from '../components/loader/Loader';
 
 
@@ -19,7 +19,7 @@ const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const socket = useRef(null);
-  const [friendUsername,setFriendUsername] = useState('')
+  const [friendUsername, setFriendUsername] = useState('')
   const [toUser, setToUser] = useState('');
   const [from, setFrom] = useState('');
   const [selectTosender, setSelectToSender] = useState(false);
@@ -28,6 +28,7 @@ const Chat = () => {
   const [isShowProfile, setIsShowProfile] = useState(false);
   const [isSelectedAddFriend, setAsSelectedAddFriend] = useState(false);
   const [isAddFriendOpen, setIsAddFriendOpen] = useState(false);
+  const [userProfileImage,setUserProfileImage] = useState('');
 
   const [popup, setPopup] = useState({
     visible: false,
@@ -89,7 +90,7 @@ const Chat = () => {
   }
 
   function handleCreateFriend(e) {
-     e.stopPropagation()
+    // e.stopPropagation()
     setIsAddFriendOpen(true)
     setAsSelectedAddFriend(true)
 
@@ -135,9 +136,9 @@ const Chat = () => {
       if (deletedUserOrNot) {
         console.log("Deleted successfully")
         fetchFriends()
-        return {status:true,message:'Deleted successfully'};
+        return { status: true, message: 'Deleted successfully' };
       } else {
-        return {status:false,message:'Not Deleted successfully'};;
+        return { status: false, message: 'Not Deleted successfully' };;
         console.log("Not Deleted successfully")
       }
     }
@@ -152,7 +153,8 @@ const Chat = () => {
       const { data } = await axios.post(addFriendApi, {
         username: fromUserName,
         friendUserName: friendUserNme,
-        chat: { text: 's', self: true }
+        chat: { text: 's', self: true },
+
       });
       if (data) {
         console.log(data);
@@ -227,10 +229,26 @@ const Chat = () => {
       showPopup('User does not exist.');
     }
   }
+  const  getProfileImage = async (username) => {
+    console.log('First time image fetch')
+
+    try {
+      const { data } = await axios.get(getUserProfileImage, {
+        params: { username }
+      });
+
+      setUserProfileImage(data.profileImage);
+  
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   useEffect(() => {
     const username = JSON.parse(localStorage.getItem('chat-app-user'));
     setFrom(username);
+    getProfileImage(username);
+    console.log('First time image fetch')
 
     socket.current = io(host);
 
@@ -243,8 +261,8 @@ const Chat = () => {
     });
 
     socket.current.on('private_message', (message) => {
-    
-      if(message.from==localStorage.getItem('selected-user')){
+
+      if (message.from == localStorage.getItem('selected-user')) {
         setMessages((prevMessages) => [...prevMessages, { text: message.text, self: false }]);
       }
       postMessage(message.to, message.from, { text: message.text, self: false });
@@ -267,10 +285,13 @@ const Chat = () => {
     }
   };
 
-  useEffect(() => {
+  
 
+  useEffect(() => {
     if (from) fetchFriends();
+    
     if (isSelectedAddFriend) fetchFriends();
+
   }, [from, isSelectedAddFriend]);
 
   async function postMessage(fromUserName, toUserName, inputText) {
@@ -294,7 +315,7 @@ const Chat = () => {
         text: input,
         toUser: toUser,
         from: from,
-      };  
+      };
       socket.current.emit('private_message', message);
       setMessages((prevMessages) => [...prevMessages, { text: message.text, self: true }]);
       postMessage(from, toUser, { text: message.text, self: true });
@@ -356,7 +377,7 @@ const Chat = () => {
 
   useEffect(() => {
     const handleBackButton = () => {
-       
+
       console.log('Back button was pressed');
       handleSidebarAndRightbar()
     };
@@ -374,14 +395,15 @@ const Chat = () => {
 
   return (
     <div onClick={() => minnimizeAllabsoluteDialogue()} className={` ${inPhoneMode ? 'pt-10' : 'pl-11 pt-10'} chatWrapper h-screen w-screen bg-gray-800`}>
-            <h1 className=" select-none logo absolute top-1 left-2 font-bold text-white text-2xl flex items-center justify-between cursor-pointer"   ><img className='h-5 mr-1' src={exampleImage} alt="" />Maxor</h1>
+      <h1 onClick={() => window.location.reload()} className=" select-none logo absolute top-1 left-2 font-bold text-white text-2xl flex items-center justify-between cursor-pointer"   ><img className='h-5 mr-1' src={Logo} alt="" />Maxor</h1>
 
       <div className={` ${inPhoneMode ? ' right-4 top-1' : ' bottom-3 left-1 '} profile absolute z-10`}>
-        <button className='text-white text-2xl' onClick={() => setIsShowProfile(prev => !prev)}>⚛️</button>
+        <button className='text-white text-2xl ' onClick={() => setIsShowProfile(prev => !prev)}><img className='w-8 h-8 rounded-full border border-gray-900 border-spacing-1' src={userProfileImage} alt="" /></button>
         {isShowProfile && <div onClick={(e) => e.stopPropagation()} className={` ${inPhoneMode ? '-left-36 top-1' : 'bottom-8 left-8'} profileDisplay rounded border border-gray-900 flex-col h-32 w-32 items-center bg-gray-800 absolute `}>
           <div className="profileLogo flex items-center justify-center mt-2">
             <span className='text-2xl'>☯️</span>
           </div>
+          
           <h1 className='flex items-center justify-center mt-2 text-gray-300'>{from}</h1>
           <button className='flex items-center justify-center w-16 rounded p-1 m-auto mt-2 text-gray-300 font-bold bg-[#1c212c] cursor-pointer' onClick={handleLogOut}>Logout</button>
         </div>}
@@ -392,8 +414,8 @@ const Chat = () => {
             <div className="chatsAndCreateNew m-2 top-0 relative">
               <div className="flex justify-between items-center border-b border-gray-800 pb-2 mb-2 relative">
                 <span className="text-white">Chats</span>
-                <button className={`${isSelectedAddFriend ? ' bg-slate-600 ' : ''} transition-all text-gray-400 border border-gray-400 rounded-md p-1 select-none `} onClick={(e) => handleCreateFriend(e)}>New</button>
-                {isAddFriendOpen && <div onClick={(e) => e.stopPropagation()} className={` ${isSelectedAddFriend ? 'transition-all ' : ''}  ${!rightbarVisible ? ' top-6 right-14' : 'top-5 -right-48 '} addFriend z-10  border-gray-900 flex-col pt-5 h-36 rounded-md w-44 items-center bg-gray-800 absolute `}>
+                <button className={`${isSelectedAddFriend ? ' bg-slate-600 ' : ''} transition-all  text-gray-400  rounded-md p-1 select-none `} onClick={(e) => handleCreateFriend(e)}><box-icon color="white"  name='dots-vertical-rounded'></box-icon></button>
+                {isAddFriendOpen && <div onClick={(e) => e.stopPropagation() } className={` ${isSelectedAddFriend ? 'transition-all ' : ''}  ${!rightbarVisible ? ' top-6 right-14' : 'top-5 -right-48 '} addFriend z-10  border-gray-900 flex-col pt-5 h-36 rounded-md w-44 items-center bg-gray-800 absolute `}>
                   <div className='flex items-center justify-center text-gray-300 p-2'>
                     <input value={friendUsername} type="text" placeholder="Enter username" className="searchBar w-full p-2 rounded-md bg-gray-800 border outline-none border-gray-500 text-gray-400" onKeyPress={(e) => e.key === 'Enter' && handleAddFriend()} onChange={(e) => setFriendUsername(e.target.value.toLowerCase().trim(' '))} />
                   </div>
@@ -424,13 +446,13 @@ const Chat = () => {
               <input type="text" name="" id="" placeholder="Search" className="searchBar w-full p-2 rounded-md bg-gray-800 outline-none text-gray-400" />
             </div>
             <div className="transition-all friends overflow-hidden hover:overflow-y-auto p-1 custom-scrollbarForUsers">
-              {allFriends.map((friend, index) => (
+              {allFriends.map((friendAndPrifileImage, index) => (
                 <User
                   key={index}
                   handleArchiveDeleteCleanChat={handleArchiveDeleteCleanChat}
                   index={index}
                   handleSetUser={handleSetUser}
-                  friend={friend}
+                  friendAndPrifileImage={friendAndPrifileImage}
                   selected={selectedUserIndex === index} // Add this line
                 />
               ))}

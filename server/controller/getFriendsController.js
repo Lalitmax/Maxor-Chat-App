@@ -3,16 +3,19 @@ import { User } from '../model/messageModel.js';
 const getFriends = async (req, res) => {
     try {
         const { username } = req.query; // Extract username from query parameters
- 
+
         const user = await User.findOne({ username }); // Find user by username
 
         if (!user) {
             return res.status(404).json({ message: 'User not found.' });
         }
 
-        // Extract friend usernames from user data
-        const friends = user.friendAndChats.map(friend => friend.friendUserName);
- 
+        // Extract friend usernames and profile images from user data
+        const friends = user.friendAndChats.map(friend => ({
+            friendUserName: friend.friendUserName,
+            profileImage: friend.profileImage
+        }));
+
         res.status(200).json(friends);
     } catch (error) {
         console.log(error);
@@ -20,4 +23,4 @@ const getFriends = async (req, res) => {
     }
 };
 
-export default getFriends
+export default getFriends;

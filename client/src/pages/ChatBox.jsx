@@ -56,13 +56,11 @@ const ChatBox = ({ messages, input, setInput, rightbarVisible, sendMessage, whFu
         {messages.map((msg, index) => (
           <div
             key={index}
-            className={` ml-14 relative message max-w-sm p-2 rounded-b-xl m-3 clear-both ${msg.self ? 'float-right bg-gray-700 text-white rounded-l-xl' : 'rounded-r-xl text-white ml-10 float-left bg-gray-800'}`}
+            className={`  relative message max-w-sm p-2 rounded-b-xl m-3 clear-both ${msg.self ? 'float-right bg-gray-700 text-white rounded-l-xl' : 'rounded-r-xl text-white float-left bg-gray-800'}`}
             ref={messageEndRef}
             style={{ wordBreak: 'break-word' }} // Ensure long words break appropriately
           >
-            <div className="chaterLogo absolute -left-10">
-              <box-icon type="solid" name="user-circle" color="white" size="md"></box-icon>
-            </div>
+             
             {msg.text}
           </div>
         ))}

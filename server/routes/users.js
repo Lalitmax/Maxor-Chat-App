@@ -6,6 +6,7 @@ import getSpecificUserData from '../controller/getSpecificUserDataController.js'
 import isUserExistOrNot from '../controller/usernameExistOrNotController.js'
 import deleteFriend from '../controller/deleteFriendController.js'
 import helloChatApp from '../controller/helloChatAppController.js'
+import getUserProfileImage from '../controller/getUserProfileImageController.js'
 const router  = express.Router();
 
 router.post('/auth/register', authControllers.register)
@@ -16,6 +17,7 @@ router.get('/isUserExistOrNot',isUserExistOrNot);
 router.get('/getSpecificUserData',getSpecificUserData);
 router.get('/getFriends',getFriends);
 router.get('/helloChatApp',helloChatApp);
+router.get('/getUserProfileImage',getUserProfileImage);
 
 
 

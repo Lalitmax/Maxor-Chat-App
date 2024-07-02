@@ -1,21 +1,28 @@
 import { useState } from 'react';
-// import {getStorage} from '../utils/firebase'
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
+import app from '../utils/firebase';
+
 function ImageUploader() {
     const [isUploading, setIsUploading] = useState(false);
-    const [uploadedImage, setUploadedImage] = useState(null);
-    const [gotImageUrl,setGotImageUrl] = useState('')
+    const [gotImageUrl, setGotImageUrl] = useState('');
 
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        console.log(file)
-        if (file) {
+    const handleImageChange = async (e) => {
+        const image = e.target.files[0];
+ 
+        if (image) {
             setIsUploading(true);
-            // Simulate an upload process
-            const storage = getStorage
-            setTimeout(() => {
-                setUploadedImage(URL.createObjectURL(file));
+            try {
+                const storage = getStorage(app);
+                const storageRef = ref(storage, "images/" + image.name);
+                await uploadBytes(storageRef, image);
+                const downloadURL = await getDownloadURL(storageRef);
+                setGotImageUrl(downloadURL);
+                console.log(downloadURL);
+            } catch (error) {
+                console.error("Error uploading image: ", error);
+            } finally {
                 setIsUploading(false);
-            }, 2000); // Simulate a 2 second upload time
+            }
         }
     };
 
@@ -34,8 +41,14 @@ function ImageUploader() {
                     hover:file:bg-indigo-100 mb-4"
                 />
                 {isUploading && <p className="text-blue-500 text-center">Uploading...</p>}
-             
-                {gotImageUrl.length>1 && <div className="publicImgUrl">public Url : {}</div>} 
+                {gotImageUrl && (
+                    <div className="publicImgUrl text-center">
+                        <p>Public URL:</p>
+                        <a href={gotImageUrl} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">
+                            {gotImageUrl}
+                        </a>
+                    </div>
+                )}
             </div>
         </div>
     );
