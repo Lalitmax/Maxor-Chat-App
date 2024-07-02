@@ -1,16 +1,14 @@
 import Register from "../model/register.js";
-import bcrypt from 'bcrypt';
 
 const register = async (req, res) => {
     try {
-        const { username, name, password,profileImage} = req.body;
+        const { username, name, password, profileImage } = req.body;
         const existingUser = await Register.findOne({ username });
         if (existingUser) {
             return res.status(400).json({ message: "User already exists" });
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = new Register({ username, name, password: hashedPassword ,profileImage});
+        const newUser = new Register({ username, name, password, profileImage });
         await newUser.save();
         res.status(201).json({ message: "User registered successfully" });
     } catch (error) {
@@ -27,8 +25,7 @@ const login = async (req, res) => {
             return res.status(400).json({ error: "Username does not exist" });
         }
 
-        const isPasswordValid = await bcrypt.compare(password, user.password);
-        if (!isPasswordValid) {
+        if (password !== user.password) {
             return res.status(400).json({ error: "Password is incorrect" });
         }
 
@@ -39,7 +36,4 @@ const login = async (req, res) => {
     }
 };
 
-
-
-
-export default { register, login }
+export default { register, login };
