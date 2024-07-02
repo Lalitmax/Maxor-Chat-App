@@ -5,7 +5,6 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "nodemon index.js",
     "build": "node index.js"
   },
   "author": "Lalit Max",
